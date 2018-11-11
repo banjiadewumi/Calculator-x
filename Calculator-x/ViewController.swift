@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class ViewController: UIViewController {
     
@@ -14,17 +15,24 @@ class ViewController: UIViewController {
     var firstNumber: Double = 0
     var secondNumber: Double = 0
     var symbol: String = ""
-    var settings: SettingsViewController!
+
     
     let defaults = UserDefaults.standard
     
 
     @IBOutlet weak var resultLabel: UILabel!
+    
+    @IBOutlet weak var mySwitch: UISwitch!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        defaults.double(forKey: "showLastNumber")
+       defaults.double(forKey: "showLastNumber")
+       mySwitch.isOn = defaults.bool(forKey: "myThemeChoice")
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -117,11 +125,43 @@ class ViewController: UIViewController {
         }
     }
     
-    func changeSkin() {
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if UserDefaults.standard.bool(forKey: "myThemeChoice") {
+            
+            self.view.backgroundColor = UIColor.white
+            resultLabel.textColor = UIColor.black
+        }
+        else {
+            self.view.backgroundColor = UIColor.darkGray
+            resultLabel.textColor = UIColor.white
+        }
         
     }
    
     
+    @IBAction func toggleSwitchPressed(_ sender: UISwitch) {
+        
+        defaults.set(sender.isOn, forKey: "myThemeChoice")
+        
+        if mySwitch.isOn {
+            
+            self.view.backgroundColor = UIColor.white
+            resultLabel.textColor = UIColor.black
+        
+        }
+        else {
+       
+            self.view.backgroundColor = UIColor.darkGray
+            resultLabel.textColor = UIColor.white
+        
+            
+        }
+        
+    }
     
+    
+    
+   
 }
 
